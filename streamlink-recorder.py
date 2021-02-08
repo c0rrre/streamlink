@@ -32,6 +32,7 @@ game_list = []
 streamlink_args = ""
 recording_size_limit_in_mb = 0
 recording_retention_period_in_days = 3
+display_offline_message = True
 
 # Services
 stream_check_service: TwitchStreamCheckService = None
@@ -49,8 +50,9 @@ def loopcheck(do_delete, start_timer):
         return
     elif status == StreamCheck.ERROR:
         print("Unexpected error, try again later...")
-    elif status == StreamCheck.OFFLINE:
+    elif status == StreamCheck.OFFLINE and display_offline_message:
         print(user, "Stream currently offline, checking again in", timer, "seconds...")
+        display_offline_message = False
     elif status == StreamCheck.UNWANTED_GAME:
         print("Game in stream is not in the whitelist, checking again in", timer, "seconds...")
     elif status == StreamCheck.ONLINE:
@@ -59,6 +61,9 @@ def loopcheck(do_delete, start_timer):
             quality=quality,
             do_delete=do_delete,
             streamlink_args=streamlink_args)
+        
+        # reset the offline message status
+        display_offline_message= True
 
         # Wait for problematic stream parts to pass
         time.sleep(10)

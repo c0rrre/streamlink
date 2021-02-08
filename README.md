@@ -23,6 +23,8 @@ Implement more user-friendly recording naming scheme
 Edit recording metadata to include stream title and audio language  
 Added after-stream double check to restart recording as soon as possible in case of a stream error  
 Refactored codebase to help later development
+Dont spam the stream offline message
+Upgrade python 3.9.1-alpine3.12
 
 ### 1.8.4
 Added support for passing additional arguments to Streamlink 

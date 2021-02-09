@@ -21,10 +21,10 @@ class RecordRetentionService:
             for f in files
         ]
         augmented_files = sorted(augmented_files, key=lambda f: f["mod_time"], reverse=True)
-
-        augmented_files = self.__check_time_limit(augmented_files)
-
-        augmented_files = self.__check_size_limit(augmented_files)
+        
+        if augmented_files:
+            augmented_files = self.__check_time_limit(augmented_files)
+            augmented_files = self.__check_size_limit(augmented_files)
 
         return augmented_files
 

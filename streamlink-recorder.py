@@ -44,6 +44,7 @@ def loopcheck(do_delete, start_timer):
     info = stream_check_service.check_user(user)
     status = info["status"]
     stream_data = info["data"]
+    global display_offline_message
 
     if status == StreamCheck.USER_NOT_FOUND:
         print("Streamer with username {} not found. Invalid username?".format(user))
@@ -61,9 +62,9 @@ def loopcheck(do_delete, start_timer):
             quality=quality,
             do_delete=do_delete,
             streamlink_args=streamlink_args)
-        
+
         # reset the offline message status
-        display_offline_message= True
+        display_offline_message = True
 
         # Wait for problematic stream parts to pass
         time.sleep(10)
@@ -121,7 +122,7 @@ def main():
                         default="0",
                         help="Recording older than the given limit (in days) will be deleted")
     args = parser.parse_args()
- 
+
     if args.timer is not None and args.timer != "":
         timer = int(args.timer)
     if args.user is not None:

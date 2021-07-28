@@ -5,3 +5,7 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
+  
+- name: Build and push Docker images
+  uses: docker/build-push-action@v2.6.1
+

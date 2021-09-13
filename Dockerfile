@@ -6,6 +6,7 @@ FROM base as builder
 
 # Install every build dependencies in builder image
 RUN apk add gcc musl-dev --no-cache
+RUN apt-get update && apt-get install -y build-essential libssl-dev libffi-dev python-dev
 RUN mkdir /install
 WORKDIR /install
 RUN /usr/local/bin/python -m pip install --upgrade pip

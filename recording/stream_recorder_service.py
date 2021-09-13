@@ -15,13 +15,13 @@ from recording.recording_constants import SAVE_PATH
 class StreamRecorderService:
     record_retention_service: RecordRetentionService
 
-    def __init__(self, record_retention_service: RecordRetentionService, apprise_obj):
+    def __init__(self, record_retention_service: RecordRetentionService, apprise_list):
         self.record_retention_service = record_retention_service
 
         self.apprise_obj = apprise.Apprise()
 
-        for notification_service in apprise_obj:
-            apprise_obj.add(notification_service)
+        for notification_service in apprise_list:
+            self.apprise_obj.add(notification_service)
 
     def start_recording(self, stream_data, quality="best", do_delete=True, streamlink_args=""):
         if do_delete:

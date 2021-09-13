@@ -14,12 +14,12 @@ RUN pip install --prefix=/install --upgrade oauth2client
 RUN pip install --prefix=/install --upgrade oauthlib
 RUN pip install --prefix=/install --upgrade requests_oauthlib
 RUN pip install --prefix=/install --upgrade pycountry
+RUN pip install --prefix=/install --upgrade apprise
 
 # Run in minimal alpine container with no other dependencies
 FROM base as runner
 COPY --from=builder /install /usr/local
 ADD streamlink-recorder.py /
-ADD notification/ notification/
 ADD recording/ recording/
 ADD twitch/ twitch/
 

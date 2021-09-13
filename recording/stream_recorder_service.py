@@ -6,17 +6,22 @@ import subprocess
 from datetime import datetime
 
 import pycountry
+import apprise
 
 from recording.record_retention_service import RecordRetentionService
 from recording.recording_constants import SAVE_PATH
-from notification.notification_service_repository import NotificationServiceRepository
 
 
 class StreamRecorderService:
     record_retention_service: RecordRetentionService
 
-    def __init__(self, record_retention_service: RecordRetentionService):
+    def __init__(self, record_retention_service: RecordRetentionService, apprise_obj):
         self.record_retention_service = record_retention_service
+
+        self.apprise_obj = apprise.Apprise()
+
+        for notification_service in apprise_obj:
+            apprise_obj.add(notification_service)
 
     def start_recording(self, stream_data, quality="best", do_delete=True, streamlink_args=""):
         if do_delete:
@@ -34,14 +39,16 @@ class StreamRecorderService:
         recorded_filename = os.path.join(SAVE_PATH, filename)
 
         # start streamlink process
-        NotificationServiceRepository.get_instance().notify_start_recording(username, stream_title)
+        self.apprise_obj.notify(title="Streamlink", body="Started recording for {user}: {title}"
+                                .format(user=username, title=stream_title))
         print(username, "recording ... ")
 
         self.__start_streamlink(recorded_filename, username, quality, streamlink_args)
         if os.path.exists(recorded_filename):
             self.__add_metadata(recorded_filename, stream_title, language)
 
-        NotificationServiceRepository.get_instance().notify_end_recording(username, stream_title)
+        self.apprise_obj.notify(title="Streamlink", body="Stopped recording for {user}: {title}"
+                                .format(user=username, title=stream_title))
         print("Stream is done. Going back to checking.. ")
 
     def __start_streamlink(self, recorded_filename, user, quality, streamlink_args):

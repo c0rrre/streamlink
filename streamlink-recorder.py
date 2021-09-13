@@ -7,8 +7,6 @@ from twitch.stream_check import StreamCheck
 from twitch.stream_check_service import TwitchStreamCheckService
 from recording.stream_recorder_service import StreamRecorderService
 from recording.record_retention_service import RecordRetentionService
-from notification.notification_service_repository import NotificationServiceRepository
-from notification.implementations.slack_notification_service import SlackNotificationService
 
 ## enable extra logging
 # import logging
@@ -27,8 +25,8 @@ quality = "best"
 client_id = ""
 client_secret = ""
 token = ""
-slack_id = ""
 game_list = []
+apprise_list = []
 streamlink_args = ""
 recording_size_limit_in_mb = 0
 recording_retention_period_in_days = 3
@@ -78,7 +76,7 @@ def main():
     global quality
     global client_id
     global client_secret
-    global slack_id
+    global apprise_list
     global game_list
     global streamlink_args
     global recording_size_limit_in_mb
@@ -105,8 +103,8 @@ def main():
     parser.add_argument("-clientsecret",
                         help="Your twitch app client secret")
 
-    parser.add_argument("-slackid",
-                        help="Your slack app client id")
+    parser.add_argument("-appriseargs",
+                        help="Your apprise service arguments, seperated by comma")
 
     parser.add_argument("-streamlinkargs",
                         default="",
@@ -126,11 +124,10 @@ def main():
         user = args.user
     if args.quality is not None:
         quality = args.quality
-    if args.slackid is not None:
-        slack_id = args.slackid
     if args.gamelist is not None and args.gamelist != "":
         game_list = args.gamelist.split(",")
-
+    if args.appriseargs is not None and args.appriseargs != "":
+        apprise_list = args.appriseargs.split(",")
     if args.clientid is not None:
         client_id = args.clientid
     if args.clientsecret is not None:
@@ -149,11 +146,10 @@ def main():
     if args.recordingretention is not None and args.recordingretention != "":
         recording_retention_period_in_days = int(args.recordingretention)
 
-    NotificationServiceRepository.get_instance().register_notification_service(SlackNotificationService(slack_id))
 
     record_retention_service = RecordRetentionService(recording_retention_period_in_days, recording_size_limit_in_mb)
 
-    stream_recorder_service = StreamRecorderService(record_retention_service)
+    stream_recorder_service = StreamRecorderService(record_retention_service, apprise_list)
     stream_check_service = TwitchStreamCheckService(client_id, client_secret, game_list)
 
     print("Checking for", user, "every", timer, "seconds. Record with", quality, "quality.")

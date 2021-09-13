@@ -14,7 +14,8 @@ RUN pip install --prefix=/install --upgrade oauth2client
 RUN pip install --prefix=/install --upgrade oauthlib
 RUN pip install --prefix=/install --upgrade requests_oauthlib
 RUN pip install --prefix=/install --upgrade pycountry
-RUN pip install --prefix=/install --upgrade apprise
+RUN pip install --prefix=/install --upgrade cryptography
+RUN pip install --prefix=/install --upgrade apprise 
 
 # Run in minimal alpine container with no other dependencies
 FROM base as runner
@@ -26,4 +27,4 @@ ADD twitch/ twitch/
 RUN apk add ffmpeg --no-cache
 
 # Configure entrypoint with environment variables (only user is mandatory)
-ENTRYPOINT python ./streamlink-recorder.py -user=${user} -timer=${timer} -quality=${quality} -clientid=${clientid} -clientsecret=${clientsecret} -slackid=${slackid} -gamelist="${gamelist}" -streamlinkargs="${streamlinkargs}" -recordingsizelimit="${recordingsizelimit}" -recordingretention="${recordingretention}"
+ENTRYPOINT python ./streamlink-recorder.py -user=${user} -timer=${timer} -quality=${quality} -clientid=${clientid} -clientsecret=${clientsecret} -appriseargs="${appriseargs}" -gamelist="${gamelist}" -streamlinkargs="${streamlinkargs}" -recordingsizelimit="${recordingsizelimit}" -recordingretention="${recordingretention}"

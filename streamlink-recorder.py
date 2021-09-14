@@ -1,5 +1,6 @@
 import argparse
 import time
+import apprise
 
 from threading import Timer
 
@@ -27,6 +28,7 @@ client_secret = ""
 token = ""
 game_list = []
 apprise_list = []
+notify_on_startup = False
 streamlink_args = ""
 recording_size_limit_in_mb = 0
 recording_retention_period_in_days = 3
@@ -77,6 +79,7 @@ def main():
     global client_id
     global client_secret
     global apprise_list
+    global notify_on_startup
     global game_list
     global streamlink_args
     global recording_size_limit_in_mb
@@ -105,6 +108,8 @@ def main():
 
     parser.add_argument("-appriseargs",
                         help="Your apprise service arguments, seperated by comma")
+    parser.add_argument("-notifyonstartup",
+                        help="Send a apprise notification on startup")
 
     parser.add_argument("-streamlinkargs",
                         default="",
@@ -128,6 +133,8 @@ def main():
         game_list = args.gamelist.split(",")
     if args.appriseargs is not None and args.appriseargs != "":
         apprise_list = args.appriseargs.split(",")
+    if args.notifyonstartup is not None:
+        notify_on_startup = args.notifyonstartup
     if args.clientid is not None:
         client_id = args.clientid
     if args.clientsecret is not None:
@@ -146,13 +153,20 @@ def main():
     if args.recordingretention is not None and args.recordingretention != "":
         recording_retention_period_in_days = int(args.recordingretention)
 
+    apprise_obj = apprise.Apprise()
+
+    for notification_service in apprise_list:
+        apprise_obj.add(notification_service)
 
     record_retention_service = RecordRetentionService(recording_retention_period_in_days, recording_size_limit_in_mb)
 
-    stream_recorder_service = StreamRecorderService(record_retention_service, apprise_list)
+    stream_recorder_service = StreamRecorderService(record_retention_service, apprise_obj)
     stream_check_service = TwitchStreamCheckService(client_id, client_secret, game_list)
 
     print("Checking for", user, "every", timer, "seconds. Record with", quality, "quality.")
+    apprise_obj.notify(title="Streamlink",
+                       body="Checking for {0} every {1} seconds. Record with {2} quality".format(user, timer, quality))
+
     loopcheck(do_delete=True, start_timer=True)
 
 

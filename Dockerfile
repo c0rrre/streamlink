@@ -30,4 +30,4 @@ ADD twitch/ twitch/
 RUN apk add ffmpeg --no-cache
 
 # Configure entrypoint with environment variables (only user is mandatory)
-ENTRYPOINT python ./streamlink-recorder.py -user=${user} -timer=${timer} -quality=${quality} -clientid=${clientid} -clientsecret=${clientsecret} -appriseargs="${appriseargs}" -gamelist="${gamelist}" -streamlinkargs="${streamlinkargs}" -recordingsizelimit="${recordingsizelimit}" -recordingretention="${recordingretention}"
+ENTRYPOINT python ./streamlink-recorder.py -user=${user} -timer=${timer} -quality=${quality} -clientid=${clientid} -clientsecret=${clientsecret} -appriseargs="${appriseargs}" -notifyonstartup="${notifyonstartup}" -gamelist="${gamelist}" -streamlinkargs="${streamlinkargs}" -recordingsizelimit="${recordingsizelimit}" -recordingretention="${recordingretention}"

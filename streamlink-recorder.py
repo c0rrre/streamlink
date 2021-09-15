@@ -66,7 +66,7 @@ def loopcheck(do_delete, start_timer, apprise_obj):
 
         # Wait for problematic stream parts to pass
         time.sleep(10)
-        loopcheck(do_delete=False, start_timer=False)
+        loopcheck(do_delete=False, start_timer=False, apprise_obj=apprise_obj)
 
     if start_timer:
         t = Timer(timer, loopcheck, [True, True])

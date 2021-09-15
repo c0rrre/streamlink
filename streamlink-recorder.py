@@ -40,7 +40,7 @@ stream_recorder_service: StreamRecorderService = None
 record_retention_service: RecordRetentionService = None
 
 
-def loopcheck(do_delete, start_timer):
+def loopcheck(do_delete, start_timer, apprise_obj):
     info = stream_check_service.check_user(user)
     status = info["status"]
     stream_data = info["data"]
@@ -57,6 +57,7 @@ def loopcheck(do_delete, start_timer):
     elif status == StreamCheck.UNWANTED_GAME:
         print("Game in stream is not in the whitelist, checking again in", timer, "seconds...")
     elif status == StreamCheck.ONLINE:
+        apprise_obj.notify(title="Streamlink", body="Started recording for user '{user}'".format(user=user))
         stream_recorder_service.start_recording(
             stream_data,
             quality=quality,
@@ -167,7 +168,7 @@ def main():
     apprise_obj.notify(title="Streamlink",
                        body="Checking for {0} every {1} seconds. Record with {2} quality".format(user, timer, quality))
 
-    loopcheck(do_delete=True, start_timer=True)
+    loopcheck(do_delete=True, start_timer=True, apprise_obj=apprise_obj)
 
 
 if __name__ == "__main__":

@@ -35,15 +35,13 @@ class StreamRecorderService:
         recorded_filename = os.path.join(SAVE_PATH, filename)
 
         # start streamlink process
-        self.apprise_obj.notify(title="Streamlink", body="Started recording for {user}: {title}"
-                                .format(user=username, title=stream_title))
         print(username, "recording ... ")
 
         self.__start_streamlink(recorded_filename, username, quality, streamlink_args)
         if os.path.exists(recorded_filename):
             self.__add_metadata(recorded_filename, stream_title, language)
 
-        self.apprise_obj.notify(title="Streamlink", body="Stopped recording for {user}: {title}"
+        self.apprise_obj.notify(title="Streamlink", body="Stopped recording for user '{user}': '{title}'"
                                 .format(user=username, title=stream_title))
         print("Stream is done. Going back to checking.. ")
 

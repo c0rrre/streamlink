@@ -69,7 +69,7 @@ def loopcheck(do_delete, start_timer, apprise_obj):
         loopcheck(do_delete=False, start_timer=False, apprise_obj=apprise_obj)
 
     if start_timer:
-        t = Timer(timer, loopcheck, [True, True])
+        t = Timer(timer, loopcheck, [True, True, apprise_obj])
         t.start()
 
 

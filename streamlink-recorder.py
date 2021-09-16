@@ -169,7 +169,7 @@ def main():
     apprise_obj.notify(title="Streamlink",
                        body="Checking for {0} every {1} seconds. Record with {2} quality".format(user, timer, quality))
 
-    loopcheck(do_delete=True, start_timer=True, apprise_obj=apprise_obj)
+    loopcheck(do_delete=True, start_timer=True)
 
 
 if __name__ == "__main__":

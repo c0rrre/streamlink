@@ -33,6 +33,7 @@ streamlink_args = ""
 recording_size_limit_in_mb = 0
 recording_retention_period_in_days = 3
 display_offline_message = 2
+apprise_obj = apprise.Apprise()
 
 # Services
 stream_check_service: TwitchStreamCheckService = None
@@ -40,7 +41,7 @@ stream_recorder_service: StreamRecorderService = None
 record_retention_service: RecordRetentionService = None
 
 
-def loopcheck(do_delete, start_timer, apprise_obj):
+def loopcheck(do_delete, start_timer):
     info = stream_check_service.check_user(user)
     status = info["status"]
     stream_data = info["data"]
@@ -57,6 +58,7 @@ def loopcheck(do_delete, start_timer, apprise_obj):
     elif status == StreamCheck.UNWANTED_GAME:
         print("Game in stream is not in the whitelist, checking again in", timer, "seconds...")
     elif status == StreamCheck.ONLINE:
+        print("Trying to send notification via apprise...")
         apprise_obj.notify(title="Streamlink", body="Started recording for user '{user}'".format(user=user))
         stream_recorder_service.start_recording(
             stream_data,
@@ -66,10 +68,10 @@ def loopcheck(do_delete, start_timer, apprise_obj):
 
         # Wait for problematic stream parts to pass
         time.sleep(10)
-        loopcheck(do_delete=False, start_timer=False, apprise_obj=apprise_obj)
+        loopcheck(do_delete=False, start_timer=False)
 
     if start_timer:
-        t = Timer(timer, loopcheck, [True, True, apprise_obj])
+        t = Timer(timer, loopcheck, [True, True])
         t.start()
 
 
@@ -79,6 +81,7 @@ def main():
     global quality
     global client_id
     global client_secret
+    global apprise_obj
     global apprise_list
     global notify_on_startup
     global game_list
@@ -153,8 +156,6 @@ def main():
         recording_size_limit_in_mb = int(args.recordingsizelimit)
     if args.recordingretention is not None and args.recordingretention != "":
         recording_retention_period_in_days = int(args.recordingretention)
-
-    apprise_obj = apprise.Apprise()
 
     for notification_service in apprise_list:
         apprise_obj.add(notification_service)

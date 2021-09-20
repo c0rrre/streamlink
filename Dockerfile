@@ -7,6 +7,9 @@ FROM base as builder
 # skip rust installation on building cryptography module
 ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
 
+# fix output of docker container
+ENV PYTHONUNBUFFERED=1
+
 # Install every build dependencies in builder image
 RUN apk add libffi-dev openssl-dev build-base gcc musl-dev --no-cache
 RUN mkdir /install

@@ -45,8 +45,6 @@ def loopcheck(do_delete):
     stream_data = info["data"]
     global display_offline_message
 
-    print(display_offline_message)
-
     if status == StreamCheck.USER_NOT_FOUND:
         print("Streamer with username {} not found. Invalid username?".format(user))
         return

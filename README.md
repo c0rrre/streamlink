@@ -16,7 +16,8 @@ I'm also interested with new projects for automation of daily popular tasks, don
 
 ### 1.8.6
 Added new notification function (https://github.com/caronc/apprise)  
-Added startup notification (set notifyonstartup to True in order to use it)
+Added startup notification (set notifyonstartup to True in order to use it)  
+Removed timer cause it has some problems with apprise
 
 ### 1.8.5
 Added recording retention parameters:

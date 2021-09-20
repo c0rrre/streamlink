@@ -41,7 +41,7 @@ stream_recorder_service: StreamRecorderService = None
 record_retention_service: RecordRetentionService = None
 
 
-def loopcheck(do_delete, start_timer):
+def loopcheck(do_delete):
     info = stream_check_service.check_user(user)
     status = info["status"]
     stream_data = info["data"]
@@ -68,11 +68,10 @@ def loopcheck(do_delete, start_timer):
 
         # Wait for problematic stream parts to pass
         time.sleep(10)
-        loopcheck(do_delete=False, start_timer=False)
+        loopcheck(do_delete=False)
 
-    if start_timer:
-        t = Timer(timer, loopcheck, [True, True])
-        t.start()
+    time.sleep(timer)
+    loopcheck(do_delete=do_delete)
 
 
 def main():
@@ -169,7 +168,7 @@ def main():
     apprise_obj.notify(title="Streamlink",
                        body="Checking for {0} every {1} seconds. Record with {2} quality".format(user, timer, quality))
 
-    loopcheck(do_delete=True, start_timer=True)
+    loopcheck(do_delete=True)
 
 
 if __name__ == "__main__":

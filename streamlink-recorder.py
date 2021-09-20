@@ -2,8 +2,6 @@ import argparse
 import time
 import apprise
 
-from threading import Timer
-
 from twitch.stream_check import StreamCheck
 from twitch.stream_check_service import TwitchStreamCheckService
 from recording.stream_recorder_service import StreamRecorderService
@@ -47,6 +45,8 @@ def loopcheck(do_delete):
     stream_data = info["data"]
     global display_offline_message
 
+    print(display_offline_message)
+
     if status == StreamCheck.USER_NOT_FOUND:
         print("Streamer with username {} not found. Invalid username?".format(user))
         return
@@ -71,7 +71,7 @@ def loopcheck(do_delete):
         loopcheck(do_delete=False)
 
     time.sleep(timer)
-    loopcheck(do_delete=do_delete)
+    loopcheck(do_delete=False)
 
 
 def main():

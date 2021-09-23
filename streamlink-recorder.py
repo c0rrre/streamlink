@@ -68,9 +68,6 @@ def loopcheck(do_delete):
         time.sleep(10)
         loopcheck(do_delete=False)
 
-    time.sleep(timer)
-    loopcheck(do_delete=False)
-
 
 def main():
     global timer
@@ -167,6 +164,10 @@ def main():
                        body="Checking for {0} every {1} seconds. Record with {2} quality".format(user, timer, quality))
 
     loopcheck(do_delete=True)
+
+    while True:
+        time.sleep(timer)
+        loopcheck(do_delete=False)
 
 
 if __name__ == "__main__":

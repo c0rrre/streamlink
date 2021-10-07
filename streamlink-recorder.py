@@ -163,11 +163,12 @@ def main():
     apprise_obj.notify(title="Streamlink",
                        body="Checking for {0} every {1} seconds. Record with {2} quality".format(user, timer, quality))
 
-    loopcheck(do_delete=True)
+    # clean up files
+    record_retention_service.check_recording_limits()
 
     while True:
+        loopcheck(do_delete=True)
         time.sleep(timer)
-        loopcheck(do_delete=False)
 
 
 if __name__ == "__main__":

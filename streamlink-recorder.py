@@ -167,7 +167,11 @@ def main():
     record_retention_service.check_recording_limits()
 
     while True:
-        loopcheck(do_delete=True)
+        try:
+            loopcheck(do_delete=True)
+        except Exception:
+            pass
+        
         time.sleep(timer)
 
 

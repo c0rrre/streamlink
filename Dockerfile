@@ -16,6 +16,7 @@ COPY streamlink-recorder.py .
 COPY twitch_manager.py .
 COPY streamlink_manager.py .
 COPY notification_manager.py .
+COPY recordings_manager.py .
 
 # Uninstall pip, setuptools, and ensurepip
 RUN python -m pip uninstall -y pip setuptools \

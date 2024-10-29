@@ -12,8 +12,8 @@ class RecordingsManager:
 
     def __init__(self, config):
         self.download_path = config.download_path
-        self.recording_retention_period_in_days = config.recording_retention_period_in_days
-        self.recording_size_limit_in_mb = config.recording_size_limit_in_mb
+        self.recording_retention_period_in_days = int(config.recording_retention_period_in_days)
+        self.recording_size_limit_in_mb = int(config.recording_size_limit_in_mb)
 
     def check_recording_limits(self):
         message = f"Checking for recordings to delete..."

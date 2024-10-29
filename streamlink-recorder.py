@@ -10,6 +10,7 @@ import time
 import logging
 import sys
 
+from recordings_manager import RecordingsManager
 from twitch_manager import TwitchManager, StreamStatus
 from streamlink_manager import StreamlinkManager
 from notification_manager import NotificationManager
@@ -29,13 +30,23 @@ class AppConfig:
         self.telegram_bot_token = args.telegrambottoken
         self.telegram_chat_id = args.telegramchatid
         self.oauth_token = args.oauthtoken
+        self.recording_size_limit_in_mb = args.recordingsizelimitinmb
+        self.recording_retention_period_in_days = args.recordingretentionperiodindays
+        self.download_path = args.downloadpath
+        self.notify_on_startup = args.notifyonstartup
 
-def loop_check(config):
+def loop_check(config, message):
     twitch_manager = TwitchManager(config)
     streamlink_manager = StreamlinkManager(config)
     notifier_manager = NotificationManager(config)
+    recordings_manager = RecordingsManager(config)
+
+    if config.notify_on_startup:
+        notifier_manager.notify_all(message)
 
     while True:
+        recordings_manager.check_recording_limits()
+
         stream_status, title = twitch_manager.check_user(config.user)
         if stream_status == StreamStatus.ONLINE:
             safe_title = re.sub(r"[^\w\s._:-]", "", title)
@@ -53,6 +64,7 @@ def loop_check(config):
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
+    parser.add_argument("-download_path", default="/download/", help="Path where recordings should be stored")
     parser.add_argument("-timer", type=int, default=240, help="Stream check interval (less than 15s are not recommended)")
     parser.add_argument("-user", required=True, help="Twitch user that we are checking")
     parser.add_argument("-quality", default="720p60,720p,best", help="Recording quality")
@@ -63,14 +75,18 @@ def parse_arguments():
     parser.add_argument("-telegrambottoken", help="Your Telegram bot token")
     parser.add_argument("-telegramchatid", help="Your Telegram chat ID where the bot will send messages")
     parser.add_argument("-oauthtoken", help="Your OAuth token for Twitch API")
+    parser.add_argument("-recordingsizelimit", default="0", help="Older recordings will be deleted so the remaining will take up space upto the given limit in MBs")
+    parser.add_argument("-recordingretention", default="0", help="Recording older than the given limit (in days) will be deleted")
+    parser.add_argument("-notifyonstartup",help="Send a notification on startup")
     args = parser.parse_args()
 
     return AppConfig(args)
 
 def main():
     config = parse_arguments()
-    logger.info(f"Checking for {config.user} every {config.timer} seconds. Record with {config.quality} quality.")
-    loop_check(config)
+    message = f"Checking for {config.user} every {config.timer} seconds. Record with {config.quality} quality."
+    logger.info(message)
+    loop_check(config, message)
 
 if __name__ == "__main__":
     main()

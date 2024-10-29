@@ -30,8 +30,8 @@ class AppConfig:
         self.telegram_bot_token = args.telegrambottoken
         self.telegram_chat_id = args.telegramchatid
         self.oauth_token = args.oauthtoken
-        self.recording_size_limit_in_mb = args.recordingsizelimitinmb
-        self.recording_retention_period_in_days = args.recordingretentionperiodindays
+        self.recording_size_limit_in_mb = args.recordingsizelimit
+        self.recording_retention_period_in_days = args.recordingretention
         self.download_path = args.downloadpath
         self.notify_on_startup = args.notifyonstartup
 

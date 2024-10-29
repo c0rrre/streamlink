@@ -75,8 +75,8 @@ def parse_arguments():
     parser.add_argument("-telegrambottoken", help="Your Telegram bot token")
     parser.add_argument("-telegramchatid", help="Your Telegram chat ID where the bot will send messages")
     parser.add_argument("-oauthtoken", help="Your OAuth token for Twitch API")
-    parser.add_argument("-recordingsizelimit", default="0", help="Older recordings will be deleted so the remaining will take up space upto the given limit in MBs")
-    parser.add_argument("-recordingretention", default="0", help="Recording older than the given limit (in days) will be deleted")
+    parser.add_argument("-recordingsizelimit", default=0, help="Older recordings will be deleted so the remaining will take up space upto the given limit in MBs")
+    parser.add_argument("-recordingretention", default=0, help="Recording older than the given limit (in days) will be deleted")
     parser.add_argument("-notifyonstartup",help="Send a notification on startup")
     args = parser.parse_args()
 

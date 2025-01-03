@@ -9,7 +9,30 @@ Questions, suggestions, requests, reach me out on [![alt text][1.1]][1]
 
 I'm also interested with new projects for automation of daily popular tasks, don't hesitate, I'm waiting for new ideas
 
+# ⚠️ Disclaimer ⚠️
+We have renamed the master branch to main for clarity and to follow best practices. Please reconfigure your branch origin with the following commands:
+
+```sh
+git branch -m master main
+git fetch origin
+git branch -u origin/main main
+git remote set-head origin -a
+```
+
 # Notes
+
+## 3.3.2
+Refactor filename generation and add support for dynamic stream extensions in StreamlinkManager, in reference to improvement suggestion by [thematuu](https://github.com/thematuu) in [PR20](https://github.com/liofal/streamlink/pull/20)
+
+Add sidecar container for ffmpeg converstion to mp4 of .ts files.
+
+## 3.3.1
+Bump up versions dependencies.
+* requests==2.32.3
+* streamlink==7.1.1
+* twitchAPI==4.4.0
+
+And activate renovate for automatic dependencies upgrade, be aware of that setup and use automatic trigger of "latest" dockerimage replacement.
 
 ## 3.2.0
 Added support for optional OAuth token parameter to authenticate Twitch API requests.

@@ -64,7 +64,7 @@ def loop_check(config, message):
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-downloadpath", default="/download/", help="Path where recordings should be stored")
+    parser.add_argument("-downloadpath", default="/app/download/", help="Path where recordings should be stored")
     parser.add_argument("-timer", type=int, default=240, help="Stream check interval (less than 15s are not recommended)")
     parser.add_argument("-user", required=True, help="Twitch user that we are checking")
     parser.add_argument("-quality", default="720p60,720p,best", help="Recording quality")

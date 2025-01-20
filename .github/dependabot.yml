@@ -4,8 +4,17 @@ updates:
     directory: "/"
     schedule:
       interval: daily
+        commit-message:
+      prefix: "[docker] "
     open-pull-requests-limit: 10
+    reviewers:
+      - "c0rrre"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: daily
+    commit-message:
+      prefix: "[github-action] "
+    open-pull-requests-limit: 99
+    reviewers:
+      - "c0rrre"

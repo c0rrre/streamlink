@@ -2,7 +2,7 @@
   "extends": [
     "config:recommended"
   ],
-  "forkProcessing": "priority",
+  "forkProcessing": "enabled",
   "dependencyDashboard": true,
   "dependencyDashboardApproval": true,
   "assignees": ["c0rrre"],

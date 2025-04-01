@@ -1,3 +1,6 @@
+# ⚠️ Disclaimer ⚠️
+We have renamed the master branch to main for clarity and to follow best practices. Please reconfigure your branch origin with the following commands:
+
 # Context
 I was in the search for a twitch stream ripper that would monitor and save streams to my twitch synology folder to watch on plex while I'm unable to watch online.
 
@@ -9,8 +12,6 @@ Questions, suggestions, requests, reach me out on [![alt text][1.1]][1]
 
 I'm also interested with new projects for automation of daily popular tasks, don't hesitate, I'm waiting for new ideas
 
-# ⚠️ Disclaimer ⚠️
-We have renamed the master branch to main for clarity and to follow best practices. Please reconfigure your branch origin with the following commands:
 
 ```sh
 git branch -m master main
@@ -21,7 +22,10 @@ git remote set-head origin -a
 
 # Notes
 
-## 3.3.3
+## 3.3.4
+Update dependency streamlink to v7.1.3
+
+## 3.3.3 
 Update dependency streamlink to v7.1.2
 Fix filename sanitization to handle reserved characters
 
@@ -206,7 +210,7 @@ To deploy this project on Kubernetes using Helm, follow these steps:
       streamlink:
         repository: ghcr.io/liofal
         name: streamlink
-        tag: 3.3.2
+        tag: 3.3.4
         pullPolicy: Always
       ffmpeg: 
         repository: ghcr.io/liofal

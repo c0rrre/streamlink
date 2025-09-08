@@ -2,6 +2,8 @@
   "extends": [
     "config:recommended"
   ],
+  "platformAutomerge": true,
+  "automerge": true,
   "forkProcessing": "enabled",
   "dependencyDashboard": true,
   "dependencyDashboardApproval": true,

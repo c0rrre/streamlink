@@ -1,0 +1,52 @@
+# 🧱 IDE & Editor configs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 🔒 Git & CI
+.git/
+.gitignore
+.github/
+.pre-commit-config.yaml
+.releaserc.json
+renovate.json
+
+# 🧪 Umgebungsdateien
+*.env
+*.env.*
+!clientid.env.example
+!default.env
+
+# 📦 Build & Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# 🧰 Kubernetes & Deployment (nicht nötig im Container)
+kube/
+charts/
+*.yaml
+*.yml
+!docker-compose.yml
+!Dockerfile
+
+# 🧾 Dokumentation & Lizenzen
+README.md
+LICENSE*
+*.md
+
+# 🧩 Tests (falls vorhanden)
+tests/
+test/
+*.pytest_cache/
+
+# 🧠 Sonstiges
+*.log
+*.tmp
+*.bak
+*.DS_Store
